@@ -1,0 +1,297 @@
+/* ─── Tokens de design ────────────────────────────────────────────────────────
+   Centralizar cores e valores aqui facilita manutenção e futuras mudanças
+   de tema — trocar --vermelho em um lugar reflete em toda a aplicação.
+──────────────────────────────────────────────────────────────────────────── */
+:root {
+    --vermelho: #e8614a;
+    --vermelho-escuro: #c0392b;
+    --fundo: #f5f5f5;
+    --fundo-card: #ffffff;
+    --texto: #333333;
+    --sombra: rgba(0,0,0,0.1);
+}
+
+
+/* ─── Reset básico ────────────────────────────────────────────────────────────
+   Remove espaçamentos padrão do navegador para consistência entre browsers.
+   box-sizing: border-box faz padding e border não aumentarem o tamanho
+   total do elemento.
+──────────────────────────────────────────────────────────────────────────── */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* ─── Layout base ─────────────────────────────────────────────────────────────
+   flex-direction: column no body + flex: 1 no main fazem o footer
+   sempre ficar colado ao rodapé, mesmo com pouco conteúdo na página.
+──────────────────────────────────────────────────────────────────────────── */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--fundo);
+    color: var(--texto);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1; /* Ocupa o espaço disponível, empurrando o footer para baixo */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* ─── Header ──────────────────────────────────────────────────────────────────*/
+header {
+    background-color: var(--vermelho);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    box-shadow: 0 2px 10px var(--sombra);
+}
+
+header h1 {
+    color: white;
+    font-size: 1.8rem;
+    white-space: nowrap; /* Impede o título de quebrar linha em telas menores */
+}
+
+header input {
+    padding: 0.6rem 1.2rem;
+    border-radius: 25px;
+    border: 1px solid transparent;
+    flex: 1; /* Ocupa todo o espaço disponível entre o título e os botões */
+    font-size: 1rem;
+}
+
+/* Acessibilidade: outline visível indica ao usuário que o campo está focado */
+header input:focus {
+    outline: 2px solid white;
+    outline-offset: 2px;
+}
+
+header button {
+    padding: 0.6rem 1.2rem;
+    border-radius: 25px;
+    cursor: pointer;
+    background-color: var(--vermelho-escuro);
+    color: white;
+    border: none;
+    font-weight: bold;
+    transition: filter 0.2s;
+}
+
+/* filter: brightness é mais leve do que trocar background-color no hover */
+header button:hover {
+    filter: brightness(1.1);
+}
+
+
+/* ─── Grid de cards ───────────────────────────────────────────────────────────
+   flex-wrap + justify-content: center criam um grid fluido sem precisar
+   de CSS Grid — funciona bem quando o número de itens é variável.
+──────────────────────────────────────────────────────────────────────────── */
+#lista-pokemon {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+/* ─── Card de Pokémon ─────────────────────────────────────────────────────────*/
+.card-pokemon {
+    background-color: var(--fundo-card);
+    border-radius: 15px;
+    padding: 1.5rem;
+    width: 220px;
+    text-align: center;
+    box-shadow: 0 4px 15px var(--sombra);
+    /* Anima deslocamento vertical e sombra juntos para feedback visual rico */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.card-pokemon:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.card-pokemon img {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 0.6rem;
+}
+
+/* text-transform: capitalize formata "pikachu" → "Pikachu" no CSS,
+   sem precisar tratar a string no JavaScript */
+.card-pokemon h2 {
+    text-transform: capitalize;
+    font-size: 1.2rem;
+    color: var(--texto);
+}
+
+
+/* ─── Badge de tipo ───────────────────────────────────────────────────────────
+   Todos os tipos usam --vermelho por ora. Considere evoluir para classes
+   específicas por tipo (tipo-fire, tipo-water...) com cores distintas.
+──────────────────────────────────────────────────────────────────────────── */
+.tipo {
+    display: inline-block;
+    padding: 0.2rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: white;
+    background-color: var(--vermelho);
+    text-transform: capitalize;
+    margin: 0.2rem;
+}
+
+
+/* ─── Mensagem de status ──────────────────────────────────────────────────────
+   Usada para estados de carregando, erro e lista vazia.
+   A classe .erro sobrescreve cor e tamanho para dar destaque visual.
+──────────────────────────────────────────────────────────────────────────── */
+#mensagem-status {
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.2rem;
+    color: var(--texto);
+    opacity: 0.8;
+}
+
+#mensagem-status.erro {
+    color: var(--vermelho);
+    font-weight: bold;
+    font-size: 1.4rem;
+    opacity: 1;
+}
+
+
+/* ─── Modal ───────────────────────────────────────────────────────────────────
+   A alternância entre modal-fechado e modal-aberto é feita via JS com
+   classList — o CSS só define o que cada estado significa visualmente.
+──────────────────────────────────────────────────────────────────────────── */
+.modal-fechado {
+    display: none;
+}
+
+.modal-aberto {
+    position: fixed; /* Cobre toda a viewport, independente do scroll */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Overlay semitransparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Garante sobreposição a todos os outros elementos */
+}
+
+.modal-conteudo {
+    background-color: var(--fundo-card);
+    padding: 2.5rem;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 450px;
+    width: 90%; /* Fluido em mobile, limitado a 450px em desktop */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+#modal-imagem {
+    width: 180px;
+    height: 180px;
+    margin-bottom: 1rem;
+}
+
+#btn-fechar-modal {
+    margin-top: 1.5rem;
+    padding: 0.6rem 2rem;
+    border-radius: 25px;
+    border: none;
+    background-color: var(--vermelho);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: filter 0.2s;
+}
+
+#btn-fechar-modal:hover {
+    filter: brightness(1.1);
+}
+
+
+/* ─── Footer ──────────────────────────────────────────────────────────────────*/
+footer {
+    background-color: var(--vermelho);
+    padding: 1.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    box-shadow: 0 -2px 10px var(--sombra); /* Sombra invertida: sobe em vez de descer */
+}
+
+footer button {
+    padding: 0.7rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    background-color: white;
+    color: var(--vermelho);
+    border: none;
+    font-weight: bold;
+    /* Propriedades específicas em vez de "all" para melhor performance */
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+/* :not(:disabled) garante que o hover não seja aplicado em botões desabilitados */
+footer button:hover:not(:disabled) {
+    background-color: #eeeeee;
+    transform: scale(1.05);
+}
+
+footer button:disabled {
+    background-color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.6);
+    cursor: not-allowed;
+}
+
+
+/* ─── Responsividade ──────────────────────────────────────────────────────────
+   Breakpoint em 600px cobre a maioria dos celulares em modo retrato.
+──────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+    header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    header input {
+        width: 100%;
+    }
+
+    footer {
+        flex-wrap: wrap;
+        gap: 0.8rem;
+    }
+
+    footer button {
+        font-size: 0.85rem;
+        padding: 0.6rem 1rem;
+    }
+}

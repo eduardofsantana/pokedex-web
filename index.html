@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <!-- Impede que navegadores móveis apliquem zoom automático na página -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Cabeçalho com título e controles de busca/favoritos -->
+    <header>
+        <h1>Pokédex</h1>
+
+        <!-- Campo de texto para busca por nome do Pokémon -->
+        <input type="text" id="busca-input" placeholder="Digite o nome do Pokémon">
+        <button id="busca-pokemon">Buscar</button>
+
+        <!-- Botão para alternar a visualização dos favoritos -->
+        <button id="btn-favoritos">⭐ Favoritos</button>
+    </header>
+
+    <main>
+
+        <!-- Container onde os cards dos Pokémons são injetados via JS -->
+        <div id="lista-pokemon"></div>
+
+        <!-- Área de feedback para o usuário: carregando, erro, lista vazia, etc. -->
+        <div id="mensagem-status"></div>
+
+        <!--
+            Modal de detalhes do Pokémon.
+            Começa oculto via classe "modal-fechado".
+            Os dados são preenchidos dinamicamente pelo JS ao clicar em um card.
+        -->
+        <div id="modal" class="modal-fechado">
+            <div class="modal-conteudo">
+
+                <!--
+                    alt vazio aqui pois o valor correto é o nome do Pokémon,
+                    preenchido dinamicamente via JS na função abrirModal().
+                -->
+                <img src="" alt="" id="modal-imagem">
+
+                <h2 id="modal-nome"></h2>
+                <p id="modal-id"></p>
+                <p id="modal-tipos"></p>
+                <p id="modal-altura"></p>
+                <p id="modal-peso"></p>
+
+                <button id="btn-fechar-modal">Fechar</button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Navegação por páginas da Pokédex -->
+    <footer>
+        <button id="btn-anterior">Página anterior</button>
+        <button id="btn-inicio">Início</button>
+        <button id="btn-proximo">Próxima página</button>
+    </footer>
+
+    <!--
+        Script carregado ao final do body para garantir que
+        todos os elementos do DOM já estejam disponíveis antes
+        da execução do JavaScript.
+    -->
+    <script src="script.js"></script>
+</body>
+</html>
